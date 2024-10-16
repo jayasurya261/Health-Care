@@ -1,4 +1,29 @@
 import mongoose from "mongoose";
+const adminSchema = mongoose.Schema(
+    {
+        name:{
+            type:String,
+            required:true,
+        },
+        email:{
+            type : String,
+            required:true,
+            unique : true,
+        },
+        password : {
+            type : String,
+            required : true,
+        },
+        type:{
+            type : String,
+            required : true,
+        }
+
+    },
+    {
+        timestamps: true,
+    }
+)
 
 const userSchema = mongoose.Schema(
     {
@@ -20,7 +45,7 @@ const userSchema = mongoose.Schema(
             required:false,
             unique:true,
         },
-        location:{
+        place:{
             type:String,
             required:false,
         },
@@ -76,6 +101,36 @@ const imageSchema = mongoose.Schema(
     }
 );
 
+const illnessSchema = mongoose.Schema(
+    {
+        email :{
+            type:String,
+            required : true,
+        },
+        symptoms:{
+            type:String,
+            required : true,
+        },
+        isolated:{
+            type:Boolean,
+            required : false,
+        },
+        illness : {
+            type : String,
+            required : false,
+        },
+        isolationenddate:{
+            type:Date,
+            required:false
+        },
+    },
+    {
+        timestamps:true
+    }
+   
+)
 export const Image = mongoose.model('Image', imageSchema);
 
 export const UserInfo = mongoose.model('UserInfo', userSchema);
+export const AdminInfo = mongoose.model('AdminInfo', adminSchema);
+export const IllnessInfo = mongoose.model('IllnessInfo', illnessSchema);

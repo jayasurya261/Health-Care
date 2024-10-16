@@ -7,6 +7,7 @@ import fs from 'fs';
 
 import {UserInfo} from './models/models.js'
 import userRoutes from './routes/userRoutes.js'
+import adminRoutes from './routes/adminRoutes.js'
 
 const app = express()
 
@@ -25,6 +26,7 @@ if (!fs.existsSync(dir)) {
 
 
 app.use('/user',userRoutes);
+app.use('/admin',adminRoutes);
 
 mongoose
     .connect(mongoDBURL)

@@ -11,6 +11,10 @@ import Tracking from './userPages/tracking/Tracking.jsx'
 import TrackMap from './userPages/tracking/TrackMap.jsx'
 import ImageUpload from './userPages/Info/ImageUpload.jsx'
 import MyInfo from './userPages/Info/MyInfo.jsx'
+import AdminLogin from './adminPages/AdminLogin.jsx'
+import AdminHome from './adminPages/AdminHome.jsx'
+import Form from './userPages/Isolation/Form.jsx'
+import IsolationHome from './userPages/Isolation/IsolationHome.jsx'
 
 
 function App() {
@@ -20,13 +24,16 @@ function App() {
     <div>
       <Routes>
       <Route path='/login' element={<Login/>}/>
-      <Route path='/' element={<Login/>}/>
       <Route path='/register' element={<Register/>}/>
-      <Route path='/home' element={<Home/>}/>z
+      <Route path='/' element={<Home/>}/>z
       <Route path='/track' element={<Tracking/>}/>
       <Route path='/map/:_id' element={<TrackMap/>}/>
       <Route path='/upload' element={<ImageUpload/>}/>
       <Route path='/info' element={<MyInfo/>}/>
+      <Route path='/admin/login' element={<AdminLogin/>}/>
+      <Route path='/admin/home' element={<AdminHome/>}/>
+      <Route path='/form' element={<Form/>}/>
+      <Route path='/isolation/home' element={<IsolationHome/>}/>
 
       </Routes>
     </div>

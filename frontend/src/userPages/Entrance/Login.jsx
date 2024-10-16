@@ -4,6 +4,7 @@ import { images } from '../../assets/images';
 import axios from 'axios';
 import { Link } from 'react-router-dom';
 import Header from '../../components/reuse/general/Header';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
   const [captchaToken, setCaptchaToken] = useState('');
@@ -13,6 +14,8 @@ const Login = () => {
   const [toastType, setToastType] = useState('');
   const [progressWidth, setProgressWidth] = useState(0);
   const [isToastVisible, setIsToastVisible] = useState(false);
+
+  const navigate = useNavigate();
 
   // Handle hCaptcha token
   const handleCaptchaChange = (token) => {
@@ -43,6 +46,8 @@ const Login = () => {
       setToastType('');
       setProgressWidth(0);
       setIsToastVisible(false);
+      localStorage.setItem('type','user')
+      navigate('/home')
     }, 2000);
   };
 
@@ -71,12 +76,14 @@ const Login = () => {
     };
 
     axios
-      .post('http://localhost:3000/user/login', data)
+      .post('https://naturally-evident-peacock.ngrok-free.app/user/login', data)
       .then((response) => {
         console.log('Login successful:', response.data);
         localStorage.setItem('token', response.data.token); // Store token in localStorage
-        localStorage.setItem('email', email); // Store email in localStorage
+        localStorage.setItem('email', email); 
+        // Store email in localStorage
         showToast('Login successful!', 'success');
+      
       })
       .catch((error) => {
         console.error('Login failed:', error);

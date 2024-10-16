@@ -9,6 +9,11 @@ import search from './search.png'
 import bell from './bell.png'
 import vechicle from './vechicle.png'
 import banner from './banner.jpg'
+import home from './home.jpg'
+import girl1 from './girl1.jpg'
+import classroom from './classroom.jpg'
+import boy1 from './boy1.jpg'
+import friends from './friends.jpg'
 // import model from './scene.gltf'
 
 export const images = {
@@ -23,5 +28,10 @@ export const images = {
     bell,
     vechicle,
     banner,
+    home,
+    girl1,
+    classroom,
+    boy1,
+    friends,
 //     model
 }

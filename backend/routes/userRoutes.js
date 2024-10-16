@@ -1,5 +1,5 @@
 import express from 'express';
-import { UserInfo,Image } from '../models/models.js';
+import { UserInfo,Image,IllnessInfo } from '../models/models.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
@@ -268,13 +268,13 @@ router.get('/profile/:email', async (request, response) => {
 
   router.put('/profile/:email', async (req, res) => {
     const { email } = req.params;
-    const {  mobile, location, language, blood } = req.body;
+    const {  mobile, place, language, blood } = req.body;
   
     try {
       // Find user by email and update the profile
       const updatedUser = await UserInfo.findOneAndUpdate(
         { email },
-        { mobile, location, language, blood },
+        { mobile, place, language, blood },
         { new: true, runValidators: true }
       );
   
@@ -287,6 +287,43 @@ router.get('/profile/:email', async (request, response) => {
       res.status(500).json({ message: 'Error updating profile', error: error.message });
     }
   });
+
+
+
+  router.post('/illness/form',async(req,res)=>{
+    const {email,symptoms,isolated,illness,isolationenddate} = req.body;
+    try {
+        const newUser = new IllnessInfo({
+            email,
+            symptoms,
+            isolated,
+            illness,
+            isolationenddate,
+        });
+
+        await newUser.save();
+        res.status(201).json({ message: 'Request Rised successfully' });
+    }catch(error){
+        console.log(error)
+    }
+  })
   
+  router.get('/illness/my-requests/:email', async (request, response) => {
+    const { email } = request.params;
+    try {
+      const { email } = request.params; // Extracting email from params
+      const userData = await IllnessInfo.find({email });
+  
+      if (!userData) {
+        return response.status(404).json({ message: 'User not found' }); // Handling case when user is not found
+      }
+  
+      return response.status(200).json(userData); // Sending user data directly
+    } catch (error) {
+      console.log(error.message);
+      response.status(500).json({ message: error.message }); // Sending error message
+    }
+  });
+
   
 export default router;

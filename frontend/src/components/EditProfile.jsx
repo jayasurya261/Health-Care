@@ -5,7 +5,7 @@ const EditProfile = () => {
   const email = 'surya@gmail.com'
   // Define states for form inputs
   const [mobile, setMobile] = useState('');
-  const [location, setLocation] = useState('');
+  const [place, setPlace] = useState('');
   const [language, setLanguage] = useState('');
   const [blood, setBlood] = useState('');
   const [loading, setLoading] = useState(false);
@@ -21,7 +21,7 @@ const EditProfile = () => {
     try {
       const updatedProfile = {
         mobile,
-        location,
+        place,
         language,
         blood
       };
@@ -57,8 +57,8 @@ const EditProfile = () => {
             
             <input 
               type="text" 
-              value={location} 
-              onChange={(e) => setLocation(e.target.value)} 
+              value={place} 
+              onChange={(e) => setPlace(e.target.value)} 
               placeholder='Enter Location' 
               className='p-2 w-[300px] mb-10 rounded-[10px]' 
             />

@@ -84,7 +84,7 @@ const Data = () => {
             <p className='mb-3'>{profile.email}</p>
             <p className='mb-3'>{profile.mobile}</p>
             <p className='mb-3'>
-              {profile.location}
+            {profile.place}
             </p> 
             <p className='mb-3'>{profile.language}</p>
             <p className='mb-3'>{profile.blood}</p>
