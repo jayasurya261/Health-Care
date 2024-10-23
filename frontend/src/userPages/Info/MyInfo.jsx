@@ -9,6 +9,7 @@ const MyInfo = () => {
       <div>
       <Data/>
       </div>
+      
     </div>
   )
 }

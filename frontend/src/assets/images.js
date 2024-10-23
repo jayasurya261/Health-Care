@@ -14,6 +14,9 @@ import girl1 from './girl1.jpg'
 import classroom from './classroom.jpg'
 import boy1 from './boy1.jpg'
 import friends from './friends.jpg'
+import doctor1 from './doctor1.png'
+import doctor2 from './doctor2.png'
+import video from './video.png'
 // import model from './scene.gltf'
 
 export const images = {
@@ -33,5 +36,8 @@ export const images = {
     classroom,
     boy1,
     friends,
+    doctor1,
+    doctor2,
+    video,
 //     model
 }

@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import SideBar from '../../components/SideBar';
+import { useNavigate } from 'react-router-dom';
 
 const Form = () => {
   const [symptoms, setSymptoms] = useState('');
   const [illness, setIllness] = useState('');
   const [days, setDays] = useState('');
   const [email, setEmail] = useState('');
+  
+  const navigate = useNavigate();
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
@@ -25,10 +28,12 @@ const Form = () => {
       illness,
       isolationenddate: new Date(new Date().getTime() + (days * 24 * 60 * 60 * 1000)), // Calculating isolation end date based on entered days
     };
+    
 
     try {
       const response = await axios.post('http://localhost:3000/user/illness/form', requestData);
       console.log('Form submitted successfully:', response.data);
+      navigate('/isolation/home')
     } catch (error) {
       console.error('Error submitting the form:', error);
     }

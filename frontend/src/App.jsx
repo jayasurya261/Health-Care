@@ -15,6 +15,12 @@ import AdminLogin from './adminPages/AdminLogin.jsx'
 import AdminHome from './adminPages/AdminHome.jsx'
 import Form from './userPages/Isolation/Form.jsx'
 import IsolationHome from './userPages/Isolation/IsolationHome.jsx'
+import IsolationInfo from './userPages/Isolation/IsolationInfo.jsx'
+import JitsiMeet from './userPages/VideoConsultant/JitsiMeet.jsx'
+import ConsultancyRequest from './userPages/VideoConsultant/ConsultancyRequest.jsx'
+import AllConsultancyRequest from './userPages/VideoConsultant/AllConsultancyRequest.jsx'
+import ProcessImagesButton from './userPages/Info/AIAnalyze.jsx'
+import AllIsolationRequest from './adminPages/AllIsolationRequest.jsx'
 
 
 function App() {
@@ -34,6 +40,12 @@ function App() {
       <Route path='/admin/home' element={<AdminHome/>}/>
       <Route path='/form' element={<Form/>}/>
       <Route path='/isolation/home' element={<IsolationHome/>}/>
+      <Route path='/isolation/info/:_id' element={<IsolationInfo/>}/>
+      <Route path='/video/consultant/:videolink' element={<JitsiMeet/>}/>
+      <Route path='/video/request' element={<ConsultancyRequest/>}/>
+      <Route path='/video/all' element={<AllConsultancyRequest/>}/>
+      <Route path='/info/ai' element={<ProcessImagesButton/>}/>
+      <Route path='/isolation/info/all' element={<AllIsolationRequest/>}/>
 
       </Routes>
     </div>

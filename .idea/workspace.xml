@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="6266d7a3-25f8-44bd-a988-6a53f575a0a7" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/backend/models/models.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/models/models.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/node_modules/.package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/backend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/routes/userRoutes.js" beforeDir="false" afterPath="$PROJECT_DIR$/backend/routes/userRoutes.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/index.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/assets/images.js" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/assets/images.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/SideBar.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/SideBar.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/reuse/general/Header.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/reuse/general/Header.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/userPages/Entrance/Login.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/userPages/Entrance/Login.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/userPages/Entrance/Register.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/userPages/Entrance/Register.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/userPages/Isolation/Form.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/userPages/Isolation/Form.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/userPages/Isolation/IsolationHome.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/userPages/Isolation/IsolationHome.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/userPages/Isolation/IsolationInfo.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/userPages/Isolation/IsolationInfo.jsx" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 0
+}]]></component>
+  <component name="ProjectId" id="2neyfzubGCAy9xAvI001lJ23UTK" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "main",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="6266d7a3-25f8-44bd-a988-6a53f575a0a7" name="Changes" comment="" />
+      <created>1729347947675</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1729347947675</updated>
+      <workItem from="1729347950052" duration="908000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+</project>

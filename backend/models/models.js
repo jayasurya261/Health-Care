@@ -95,6 +95,10 @@ const imageSchema = mongoose.Schema(
             type: String,
             required: true,
         },
+        email:{
+            type:String,
+            required:true,
+        }
     },
     {
         timestamps: true,
@@ -129,6 +133,37 @@ const illnessSchema = mongoose.Schema(
     }
    
 )
+
+const appointmentSchema = new mongoose.Schema({
+    doctorId: {
+      type: String, // Could be an ObjectId referencing a Doctor collection, if you have one
+      required: true
+    },
+    date: {
+      type: Date, // Stores the date and time of the appointment
+      required: true,
+      unique : true,
+    },
+    duration: {
+      type: Number, // Duration of the appointment
+      required: true,
+      default: 15 // Default duration is set to 15 minutes
+    },
+    email: {
+      type: String, // Could store the ID of the patient booking the appointment
+      required: true
+    },
+    description : {
+        type:String,
+        required : false
+    },
+    videolink:{
+        type:String,
+        required : false
+    }
+  });
+ 
+ export  const VideoAppointment = mongoose.model('VideoAppointment', appointmentSchema);
 export const Image = mongoose.model('Image', imageSchema);
 
 export const UserInfo = mongoose.model('UserInfo', userSchema);

@@ -1,5 +1,5 @@
 import express from 'express';
-import { UserInfo,Image,IllnessInfo } from '../models/models.js';
+import { UserInfo,Image,IllnessInfo,VideoAppointment } from '../models/models.js';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import mongoose from 'mongoose';
@@ -7,6 +7,9 @@ import dotenv from 'dotenv';
 import multer from 'multer';
 import path from 'path';
 import fs from 'fs';
+import { v4 as uuidv4 } from 'uuid';
+import Tesseract from 'tesseract.js';
+
 
 
 dotenv.config();
@@ -214,17 +217,18 @@ const upload = multer({
 });
 
 // POST route to upload an image using router
-router.post('/upload', upload.single('image'), async (req, res) => {
+router.post('/upload/:email', upload.single('image'), async (req, res) => {
     try {
         if (!req.file) {
             return res.status(400).send('No file uploaded');
         }
-
+          const email = req.params;
         // Save the image metadata in the Image model
         const newImage = new Image({
             filename: req.file.filename,
             filepath: req.file.path,
             contentType: req.file.mimetype,
+            email : email.email,
         });
 
         const savedImage = await newImage.save();
@@ -324,6 +328,177 @@ router.get('/profile/:email', async (request, response) => {
       response.status(500).json({ message: error.message }); // Sending error message
     }
   });
-
+  router.get('/illness/my-requests', async (request, response) => {
+    const { email } = request.params;
+    try {
+      const { email } = request.params; // Extracting email from params
+      const userData = await IllnessInfo.find();
   
+      if (!userData) {
+        return response.status(404).json({ message: 'User not found' }); // Handling case when user is not found
+      }
+  
+      return response.status(200).json(userData); // Sending user data directly
+    } catch (error) {
+      console.log(error.message);
+      response.status(500).json({ message: error.message }); // Sending error message
+    }
+  });
+  router.put('/illness/update-permission/:id', async (req, res) => {
+    const { id } = req.params; // Extract the request ID from the URL
+    const { isolated } = req.body; // Extract the isolated status from the request body
+    const userType = req.body.userType; // Get the user type from request body or from token (if needed)
+  
+    try {
+      // Only allow the update if the user is an admin
+     
+  
+      // Find the illness request by ID and update the isolated status
+      const updatedRequest = await IllnessInfo.findByIdAndUpdate(
+        id,
+        { isolated }, // Update only the isolated field
+        { new: true } // Return the updated document
+      );
+  
+      if (!updatedRequest) {
+        return res.status(404).json({ message: 'Illness request not found' });
+      }
+  
+      return res.status(200).json(updatedRequest); // Return the updated request
+    } catch (error) {
+      console.log(error.message);
+      return res.status(500).json({ message: error.message });
+    }
+  });
+  
+
+  router.get('/illness/request-info/:_id', async (request, response) => {
+   
+    try {
+      const { _id } = request.params; // Extracting email from params
+      const userData = await IllnessInfo.findById(_id );
+  
+      if (!userData) {
+        return response.status(404).json({ message: 'User not found' }); // Handling case when user is not found
+      }
+  
+      return response.status(200).json(userData); // Sending user data directly
+    } catch (error) {
+      console.log(error.message);
+      response.status(500).json({ message: error.message }); // Sending error message
+    }
+  });
+
+  const isSlotAvailable = async (newAppointment) => {
+    const conflictingAppointments = await VideoAppointment.find({
+      doctorId: newAppointment.doctorId,
+      date: new Date(newAppointment.date),
+    });
+  
+    return conflictingAppointments.length === 0;
+  };
+  
+  // GET route to fetch appointments for a specific date and doctor
+  router.get('/appointments', async (req, res) => {
+    try {
+      const { doctorId, date } = req.query;
+      const requestedDate = new Date(date);
+  
+      // Fetch appointments for the selected date and doctor
+      const filteredAppointments = await VideoAppointment.find({
+        doctorId,
+        date: {
+          $gte: requestedDate.setHours(0, 0, 0, 0),
+          $lt: requestedDate.setHours(23, 59, 59, 999),
+        },
+      });
+  
+      res.status(200).json(filteredAppointments);
+    } catch (error) {
+      res.status(500).json({ error: 'Error fetching appointments' });
+    }
+  });
+  
+  // POST route to book an appointment
+  router.post('/appointments', async (req, res) => {
+    try {
+
+      const { doctorId, date, duration = 15, email,description, videolink = uuidv4() } = req.body;
+  
+      const newAppointment = new VideoAppointment({
+        doctorId,
+        date,
+        duration,
+        description,
+        email,
+        videolink,
+     // Include the video call link
+      });
+  
+      // Check if the time slot is available
+      if (!(await isSlotAvailable(newAppointment))) {
+        return res.status(400).json({ message: 'Time slot already booked' });
+      }
+  
+      // Save the new appointment to the database
+      await newAppointment.save();
+      res.status(201).json({ message: 'Appointment booked successfully' });
+    } catch (error) {
+      res.status(500).json({ error: 'Error booking appointment' });
+    }
+  });
+
+  router.get('/appointments/all/:email', async (req, res) => {
+    try {
+      const email = req.params;
+      const appointments = await VideoAppointment.find(email); // Fetch all appointments from the database
+      res.status(200).json(appointments);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching appointments', error });
+    }
+  });
+  
+  router.get('/appointments/all', async (req, res) => {
+    try {
+  
+      const appointments = await VideoAppointment.find(); // Fetch all appointments from the database
+      res.status(200).json(appointments);
+    } catch (error) {
+      res.status(500).json({ message: 'Error fetching appointments', error });
+    }
+  });
+  
+//--------------------------------------//
+  router.get('/analyze-images/:email', async (req, res) => {
+    try {
+      const email = req.params;
+        // Fetch images from the database
+        const images = await Image.find(email);
+
+        // Extract file paths
+        const imagePaths = images.map(image => image.filepath);
+
+        // Analyze images with Tesseract
+        const recognizedTexts = await analyze(imagePaths);
+
+        // Send recognized texts as response
+        res.json({ texts: recognizedTexts });
+    } catch (error) {
+        console.error('Error fetching images:', error);
+        res.status(500).json({ error: 'Error fetching images' });
+    }
+});
+
+// Function to analyze images using Tesseract
+async function analyze(imagePaths) {
+    const promises = imagePaths.map((path) => {
+        return Tesseract.recognize(path, 'eng')
+            .then(({ data: { text } }) => text); // Return recognized text
+    });
+
+    // Wait for all promises to resolve
+    const texts = await Promise.all(promises);
+    return texts.join('\n'); // Merge all recognized texts
+}
+
 export default router;

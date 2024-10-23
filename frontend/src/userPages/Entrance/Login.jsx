@@ -47,7 +47,7 @@ const Login = () => {
       setProgressWidth(0);
       setIsToastVisible(false);
       localStorage.setItem('type','user')
-      navigate('/home')
+      navigate('/info')
     }, 2000);
   };
 
@@ -94,8 +94,9 @@ const Login = () => {
   return (
     <>
       <Header />
-      <div className='flex justify-between bg-slate-50 pb-[300px]'>
-        <div className='ml-[200px] mt-24'>
+      <div className='flex flex-col justify-center'>
+       <div className='flex justify-between bg-slate-50 pb-[300px] '>
+       <div className='ml-[200px] mt-24'>
           <div className='text-[40px] font-medium'>
             <p>Login to</p>
             <p>Connect with Care.</p>
@@ -163,6 +164,11 @@ const Login = () => {
             />
           </div>
         )}
+        
+       </div>
+     <Link to='/admin/login'>
+     <div className='flex justify-center  bg-slate-50 -m-[200px]'>Admin <span className='text-blue-700'>Click Here!</span></div>
+     </Link>
       </div>
     </>
   );
