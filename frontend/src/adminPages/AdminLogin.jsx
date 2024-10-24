@@ -25,7 +25,7 @@ const AdminLogin = () => {
         // Save admin type in localStorage
         localStorage.setItem('type', 'admin');
         // Navigate to the admin dashboard or another page after successful login
-        navigate('/admin/home'); // Update this to the actual dashboard path
+        navigate('/track'); // Update this to the actual dashboard path
       }
     } catch (err) {
       setError('Invalid email or password');
