@@ -56,14 +56,7 @@ router.post('/login', async (req, res) => {
     const { email, password, captchaToken } = req.body;
 
     try {
-        const verificationURL = `https://hcaptcha.com/siteverify?secret=${hcaptchaSecret}&response=${captchaToken}`;
-        const captchaResponse = await fetch(verificationURL, { method: 'POST' });
-        const captchaData = await captchaResponse.json();
-
-        if (!captchaData.success) {
-            return res.status(400).json({ message: 'Captcha verification failed' });
-        }
-
+       
         const user = await UserInfo.findOne({ email });
         if (!user) {
             return res.status(400).json({ message: 'Invalid email or password' });
@@ -73,6 +66,14 @@ router.post('/login', async (req, res) => {
         if (!isMatch) {
             return res.status(400).json({ message: 'Invalid email or password' });
         }
+        const verificationURL = `https://hcaptcha.com/siteverify?secret=${hcaptchaSecret}&response=${captchaToken}`;
+        const captchaResponse = await fetch(verificationURL, { method: 'POST' });
+        const captchaData = await captchaResponse.json();
+
+        if (!captchaData.success) {
+            return res.status(400).json({ message: 'Captcha verification failed' });
+        }
+
 
         const token = jwt.sign({ id: user._id, email: user.email, name: user.name }, JWT_SECRET, { expiresIn: '1h' });
 
@@ -102,7 +103,7 @@ router.get('/api/protected', authenticateToken, (req, res) => {
 // (This part is left as is.)
 
 // --------GPS Tracking Route----------
-router.post('/api/location', async (req, res) => {
+router.post('/api/location',  authenticateToken,async (req, res) => {
     const { latitude, longitude,email } = req.body;
     //  const userId = req.user.id;
 
@@ -126,7 +127,7 @@ router.post('/api/location', async (req, res) => {
     }
 });
 
-router.post('/app/login', async (req, res) => {
+router.post('/app/login',  authenticateToken,async (req, res) => {
     const { email, password } = req.body;
 
     try {
@@ -153,7 +154,7 @@ router.post('/app/login', async (req, res) => {
 });
 
 // GET route to fetch location by userId
-router.get('/api/location/:userId', async (req, res) => {
+router.get('/api/location/:userId', authenticateToken,async (req, res) => {
     const { userId } = req.params;
 
     try {
@@ -177,7 +178,7 @@ router.get('/api/location/:userId', async (req, res) => {
 });
 
 
-router.get('/api/users', async (req, res) => {
+router.get('/api/users',  authenticateToken,async (req, res) => {
     try {
       const users = await UserInfo.find({}, 'name email location'); // Fetch users with specific fields
       res.status(200).json(users);
@@ -254,7 +255,7 @@ router.post('/upload/:email', upload.single('image'), async (req, res) => {
     }
 });
 
-router.get('/profile/:email', async (request, response) => {
+router.get('/profile/:email', authenticateToken,async (request, response) => {
     try {
       const { email } = request.params; // Extracting email from params
       const userData = await UserInfo.findOne({ email });
@@ -270,7 +271,7 @@ router.get('/profile/:email', async (request, response) => {
     }
   });
 
-  router.put('/profile/:email', async (req, res) => {
+  router.put('/profile/:email', authenticateToken,async (req, res) => {
     const { email } = req.params;
     const {  mobile, place, language, blood } = req.body;
   
@@ -294,7 +295,7 @@ router.get('/profile/:email', async (request, response) => {
 
 
 
-  router.post('/illness/form',async(req,res)=>{
+  router.post('/illness/form', authenticateToken, async(req,res)=>{
     const {email,symptoms,isolated,illness,isolationenddate} = req.body;
     try {
         const newUser = new IllnessInfo({
@@ -312,7 +313,7 @@ router.get('/profile/:email', async (request, response) => {
     }
   })
   
-  router.get('/illness/my-requests/:email', async (request, response) => {
+  router.get('/illness/my-requests/:email',  authenticateToken, async(request, response) => {
     const { email } = request.params;
     try {
       const { email } = request.params; // Extracting email from params
@@ -328,7 +329,7 @@ router.get('/profile/:email', async (request, response) => {
       response.status(500).json({ message: error.message }); // Sending error message
     }
   });
-  router.get('/illness/my-requests', async (request, response) => {
+  router.get('/illness/my-requests',  authenticateToken, async(request, response) => {
     const { email } = request.params;
     try {
       const { email } = request.params; // Extracting email from params
@@ -344,7 +345,7 @@ router.get('/profile/:email', async (request, response) => {
       response.status(500).json({ message: error.message }); // Sending error message
     }
   });
-  router.put('/illness/update-permission/:id', async (req, res) => {
+  router.put('/illness/update-permission/:id',  authenticateToken,async (req, res) => {
     const { id } = req.params; // Extract the request ID from the URL
     const { isolated } = req.body; // Extract the isolated status from the request body
     const userType = req.body.userType; // Get the user type from request body or from token (if needed)
@@ -372,7 +373,7 @@ router.get('/profile/:email', async (request, response) => {
   });
   
 
-  router.get('/illness/request-info/:_id', async (request, response) => {
+  router.get('/illness/request-info/:_id',  authenticateToken,async (request, response) => {
    
     try {
       const { _id } = request.params; // Extracting email from params
@@ -399,7 +400,7 @@ router.get('/profile/:email', async (request, response) => {
   };
   
   // GET route to fetch appointments for a specific date and doctor
-  router.get('/appointments', async (req, res) => {
+  router.get('/appointments',  authenticateToken,async (req, res) => {
     try {
       const { doctorId, date } = req.query;
       const requestedDate = new Date(date);
@@ -420,7 +421,7 @@ router.get('/profile/:email', async (request, response) => {
   });
   
   // POST route to book an appointment
-  router.post('/appointments', async (req, res) => {
+  router.post('/appointments',  authenticateToken,async (req, res) => {
     try {
 
       const { doctorId, date, duration = 15, email,description, videolink = uuidv4() } = req.body;
@@ -448,7 +449,7 @@ router.get('/profile/:email', async (request, response) => {
     }
   });
 
-  router.get('/appointments/all/:email', async (req, res) => {
+  router.get('/appointments/all/:email',  authenticateToken,async (req, res) => {
     try {
       const email = req.params;
       const appointments = await VideoAppointment.find(email); // Fetch all appointments from the database
@@ -458,7 +459,7 @@ router.get('/profile/:email', async (request, response) => {
     }
   });
   
-  router.get('/appointments/all', async (req, res) => {
+  router.get('/appointments/all',  authenticateToken,async (req, res) => {
     try {
   
       const appointments = await VideoAppointment.find(); // Fetch all appointments from the database
@@ -469,7 +470,7 @@ router.get('/profile/:email', async (request, response) => {
   });
   
 //--------------------------------------//
-  router.get('/analyze-images/:email', async (req, res) => {
+  router.get('/analyze-images/:email',  authenticateToken,async (req, res) => {
     try {
       const email = req.params;
         // Fetch images from the database
@@ -500,5 +501,42 @@ async function analyze(imagePaths) {
     const texts = await Promise.all(promises);
     return texts.join('\n'); // Merge all recognized texts
 }
+
+
+//-------------------------------------
+const TWILIO_ACCOUNT_SID = 'ACfe06c50596d14e7ad2f2d10c10331682';
+const TWILIO_AUTH_TOKEN = 'e7c9d044014b1bdb2053a60068b4b96a';
+const TWILIO_PHONE_NUMBER = '+18582814480';
+const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
+
+
+import twilio from 'twilio';
+router.post('/make-call', (req, res) => {
+  const toNumber = req.body.to_number;
+  const locationMessage = req.body.location_message; // Get location message from request
+  console.log(`Request to make a call to: ${toNumber}`);
+
+  if (!toNumber || !locationMessage) {
+    return res.status(400).json({ error: 'Missing to_number or location_message in request body' });
+  }
+
+  // TwiML response with dynamic location
+  const twimlMessage = `<Response><Say>This is an alert. Can you help me please? ${locationMessage}</Say></Response>`;
+
+  client.calls
+    .create({
+      to: toNumber,
+      from: TWILIO_PHONE_NUMBER,
+      twiml: twimlMessage,
+    })
+    .then((call) => {
+      console.log(`Call initiated: ${call.sid}`);
+      res.json({ status: 'Call initiated', call_sid: call.sid });
+    })
+    .catch((error) => {
+      console.error('Error making call:', error.message);
+      res.status(500).json({ error: 'Failed to make call', message: error.message });
+    });
+});
 
 export default router;

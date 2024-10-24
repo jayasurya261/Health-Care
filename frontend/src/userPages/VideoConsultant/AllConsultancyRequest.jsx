@@ -10,12 +10,17 @@ const AllConsultancyRequest = () => {
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true); // Loading state
   const email = localStorage.getItem('email');
+  const token = localStorage.getItem('token');
 
   useEffect(() => {
     const fetchAppointments = async () => {
       setLoading(true); // Start loading
       try {
-        const response = await axios.get(`http://localhost:3000/user/appointments/all/${email}`);
+        const response = await axios.get(`http://localhost:3000/user/appointments/all/${email}`,{
+          headers: {
+            'Authorization': `Bearer ${token}`  // Attach the token in the Authorization header
+          }
+        });
         setAppointments(response.data);
       } catch (error) {
         console.error('Error fetching appointments:', error);

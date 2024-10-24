@@ -68,12 +68,16 @@ function ProcessImagesButton() {
   const [formattedOutput, setFormattedOutput] = useState('');
   const [loading, setLoading] = useState(false); // Loading state to show spinner
   const [isAnimating, setIsAnimating] = useState(false); // State to control button animation
-
+  const token = localStorage.getItem('token');
   const handleProcessImages = async () => {
     setLoading(true); // Start loading
     setIsAnimating(true); // Start button animation
     try {
-      const response = await axios.get(`http://localhost:3000/user/analyze-images/${email}`); // Express backend endpoint
+      const response = await axios.get(`http://localhost:3000/user/analyze-images/${email}`,{
+        headers: {
+          'Authorization': `Bearer ${token}`  // Attach the token in the Authorization header
+        }
+      }); // Express backend endpoint
       const extractedText = response.data.texts; // Get extracted text
       console.log(`Extracted Text: ${extractedText}`);
       setExtractedText(extractedText); // Set extracted text in state

@@ -8,13 +8,18 @@ const Form = () => {
   const [illness, setIllness] = useState('');
   const [days, setDays] = useState('');
   const [email, setEmail] = useState('');
-  
+  const [token, setToken] = useState('');
+
   const navigate = useNavigate();
 
   useEffect(() => {
     const storedEmail = localStorage.getItem('email');
+    const storedToken = localStorage.getItem('token');
     if (storedEmail) {
       setEmail(storedEmail); // Automatically set email from localStorage
+    }
+    if (storedToken) {
+      setToken(storedToken); // Automatically set token from localStorage
     }
   }, []);
 
@@ -26,14 +31,21 @@ const Form = () => {
       symptoms,
       isolated: true, // Assuming isolation status is true by default
       illness,
-      isolationenddate: new Date(new Date().getTime() + (days * 24 * 60 * 60 * 1000)), // Calculating isolation end date based on entered days
+      isolationenddate: new Date(new Date().getTime() + days * 24 * 60 * 60 * 1000), // Calculating isolation end date based on entered days
     };
-    
 
     try {
-      const response = await axios.post('http://localhost:3000/user/illness/form', requestData);
+      const response = await axios.post(
+        'http://localhost:3000/user/illness/form',
+        requestData,
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`, // Pass the token in the Authorization header
+          },
+        }
+      );
       console.log('Form submitted successfully:', response.data);
-      navigate('/isolation/home')
+      navigate('/isolation/home');
     } catch (error) {
       console.error('Error submitting the form:', error);
     }

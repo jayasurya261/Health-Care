@@ -24,6 +24,7 @@ const AdminLogin = () => {
       if (response.data.success) {
         // Save admin type in localStorage
         localStorage.setItem('type', 'admin');
+        localStorage.setItem('email', email);
         // Navigate to the admin dashboard or another page after successful login
         navigate('/track'); // Update this to the actual dashboard path
       }

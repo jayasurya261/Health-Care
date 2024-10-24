@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 
 const Data = () => {
+  const token = localStorage.getItem('token');
   const email = 'surya@gmail.com';
   const [showEdit, setShowEdit] = useState(false);
   const [profile, setProfile] = useState(null);
@@ -19,7 +20,11 @@ const Data = () => {
   useEffect(() => {
     async function fetchProfile() {
       try {
-        const response = await axios.get(`http://localhost:3000/user/profile/${email}`);
+        const response = await axios.get(`http://localhost:3000/user/profile/${email}`,{
+          headers: {
+            'Authorization': `Bearer ${token}`  // Attach the token in the Authorization header
+          }
+        });
         setProfile(response.data);
         setLoading(false);
       } catch (error) {

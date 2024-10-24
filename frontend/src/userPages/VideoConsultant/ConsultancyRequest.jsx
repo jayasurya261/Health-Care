@@ -14,6 +14,7 @@ const ConsultancyRequest = () => {
   const [description, setDescription] = useState('');
   const [bookedSlots, setBookedSlots] = useState([]);
   const [duration] = useState(15);
+  const token = localStorage.getItem('token');
   
   const doctors = [
     { id: 'doctor1', name: 'Dr. Hermoine Granger', image: images.doctor1, qualifications: 'M.B.B.S' },
@@ -24,9 +25,14 @@ const ConsultancyRequest = () => {
 
   useEffect(() => {
     if (selectedDate && doctorId) {
-      const date = selectedDate.toISOString().split('T')[0];
+      const date = selectedDate.toISOString().split('T')[0];  // Only fetch appointments for the selected date
       axios
-        .get('http://localhost:3000/user/appointments', { params: { doctorId, date } })
+        .get('http://localhost:3000/user/appointments', {
+          headers: {
+            'Authorization': `Bearer ${token}`  // Attach the token in the Authorization header
+          },
+          params: { doctorId, date }  // Query params sent to backend
+        })
         .then((response) => {
           setBookedSlots(response.data.map((slot) => new Date(slot.date)));
         })
@@ -42,17 +48,25 @@ const ConsultancyRequest = () => {
 
     const appointment = {
       doctorId,
-      date: selectedDate.toISOString().split('.')[0] + 'Z',
+      date: selectedDate.toISOString().split('.')[0] + 'Z',  // Standardize to UTC
       duration,
       email,
       description,
     };
 
     axios
-      .post('http://localhost:3000/user/appointments', appointment)
+      .post(
+        'http://localhost:3000/user/appointments',
+        appointment, // Request body
+        {
+          headers: {
+            'Authorization': `Bearer ${token}`,  // Attach the token in the Authorization header
+          },
+        }
+      )
       .then((response) => {
         alert('Appointment booked successfully');
-        setBookedSlots([...bookedSlots, selectedDate]);
+        setBookedSlots([...bookedSlots, selectedDate]);  // Add booked slot to the list
         navigate('/video/all');
       })
       .catch((error) => {
@@ -108,7 +122,6 @@ const ConsultancyRequest = () => {
               whileHover={{ scale: 1.05 }}
               transition={{ type: 'spring', stiffness: 300 }}
             >
-              {/* Make the image clickable to select the doctor */}
               <img
                 src={doctor.image}
                 alt={doctor.name}

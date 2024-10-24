@@ -12,6 +12,7 @@ const IsolationHome = () => {
   const [error, setError] = useState(null);
 
   const email = localStorage.getItem('email');
+  const token = localStorage.getItem('token');
 
   const navigate = useNavigate();
 
@@ -24,7 +25,11 @@ const IsolationHome = () => {
 
     const fetchRequests = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/user/illness/my-requests/${email}`);
+        const response = await axios.get(`http://localhost:3000/user/illness/my-requests/${email}`,{
+          headers: {
+            'Authorization': `Bearer ${token}`  // Attach the token in the Authorization header
+          }
+        });
         setRequests(response.data);
         setLoading(false);
       } catch (error) {

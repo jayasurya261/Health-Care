@@ -21,6 +21,7 @@ import ConsultancyRequest from './userPages/VideoConsultant/ConsultancyRequest.j
 import AllConsultancyRequest from './userPages/VideoConsultant/AllConsultancyRequest.jsx'
 import ProcessImagesButton from './userPages/Info/AIAnalyze.jsx'
 import AllIsolationRequest from './adminPages/AllIsolationRequest.jsx'
+import EmergencyComponent from './userPages/tracking/EmergencyComponent.jsx'
 
 
 function App() {
@@ -46,6 +47,7 @@ function App() {
       <Route path='/video/all' element={<AllConsultancyRequest/>}/>
       <Route path='/info/ai' element={<ProcessImagesButton/>}/>
       <Route path='/isolation/info/all' element={<AllIsolationRequest/>}/>
+      <Route path='/emergency' element={<EmergencyComponent/>}/>
 
       </Routes>
     </div>

@@ -11,6 +11,7 @@ const IsolationInfo = () => {
   const [permissionGranted, setPermissionGranted] = useState(false); // State to handle permission
 
   console.log(_id);
+  const token = localStorage.getItem('token');
 
   // Get user type from localStorage (user or admin)
   useEffect(() => {
@@ -24,7 +25,11 @@ const IsolationInfo = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const result = await axios.get(`http://localhost:3000/user/illness/request-info/${_id}`);
+        const result = await axios.get(`http://localhost:3000/user/illness/request-info/${_id}`,{
+          headers: {
+            'Authorization': `Bearer ${token}`  // Attach the token in the Authorization header
+          }
+        });
         console.log(result.data);
         setResponse(result.data);
         setPermissionGranted(result.data.isolated); // Set the initial permission status
@@ -43,7 +48,11 @@ const IsolationInfo = () => {
   // Second API call to get user profile based on email
   const fetchProfileData = async (email) => {
     try {
-      const result = await axios.get(`http://localhost:3000/user/profile/${email}`);
+      const result = await axios.get(`http://localhost:3000/user/profile/${email}`,{
+        headers: {
+          'Authorization': `Bearer ${token}`  // Attach the token in the Authorization header
+        }
+      });
       console.log('Profile Data:', result.data);
       setProfileData(result.data); // Store profile data in separate state
     } catch (error) {
@@ -55,7 +64,11 @@ const IsolationInfo = () => {
   const handlePermissionChange = async () => {
     try {
       // Update the permission status in the backend
-      await axios.put(`http://localhost:3000/user/illness/update-permission/${_id}`, {
+      await axios.put(`http://localhost:3000/user/illness/update-permission/${_id}`,{
+        headers: {
+          'Authorization': `Bearer ${token}`  // Attach the token in the Authorization header
+        }
+      }, {
         isolated: !permissionGranted, // Toggle the permission
       });
       
